@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: labora
+      POSTGRES_USER: alfred
+      POSTGRES_PASSWORD: 4lfr3d
+    ports:
+      - "5431:5432"
