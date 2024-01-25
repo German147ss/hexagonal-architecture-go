@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Build the Go application
-RUN go build -o labora-movies .
+RUN go build -o labora-movies cmd/labora-movies
 
 # Use a lightweight image as the final image
 FROM alpine:latest
