@@ -13,6 +13,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Infrastructure
 func init() {
 	// Cargar las variables de entorno desde el archivo .env
 	if err := godotenv.Load(); err != nil {
