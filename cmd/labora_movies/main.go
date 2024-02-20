@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	http_movie_handler "labora_movies/api/http"
+	http_slide_handler "labora_movies/api/http"
 	"labora_movies/internal/app"
-	"labora_movies/pkg/database/postgres"
+	"labora_movies/pkg/database/pg"
 
 	"github.com/joho/godotenv"
 )
@@ -27,19 +27,22 @@ func init() {
 	}
 
 	// Configurar y conectar la base de datos PostgreSQL
-	postgresRepo := postgres.NewPostgresMovieRepository(dbURL)
 
+	pgRepo := pg.NewPostgresSlideRepository(dbURL)
+
+	slideService := app.NewSlideService(pgRepo)
 	// Configurar el servicio de películas con el repositorio PostgreSQL
-	movieService := app.NewMovieService(postgresRepo)
 
 	// Configurar el controlador HTTP para las películas
-	movieHandler := &http_movie_handler.MovieHandler{
-		MovieService: *movieService,
+	slideHandler := &http_slide_handler.SlideHandler{
+		Service: slideService,
 	}
 
 	// Configurar rutas de la API HTTP
-	http.HandleFunc("/movies/create", movieHandler.CreateMovie)
-	http.HandleFunc("/movies/update", movieHandler.UpdateMovie)
+	http.HandleFunc("/slides/create", slideHandler.CreateSlideHandler)
+	http.HandleFunc("/slides/bulk", slideHandler.SaveBulkHandler)
+	http.HandleFunc("/slides/create_presentation", slideHandler.SaveSlidesAndCreatePresentation)
+
 }
 
 func main() {
